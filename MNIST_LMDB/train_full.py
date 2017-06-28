@@ -27,14 +27,15 @@ def custom_net(lmdb, batch_size):
     n.score =   L.InnerProduct(n.data, num_output=10, weight_filler=dict(type='xavier'))
     
     # EDIT HERE this is the LeNet variant we have already tried
-    # n.conv1 = L.Convolution(n.data, kernel_size=5, num_output=20, weight_filler=dict(type='xavier'))
-    # n.pool1 = L.Pooling(n.conv1, kernel_size=2, stride=2, pool=P.Pooling.MAX)
-    # n.conv2 = L.Convolution(n.pool1, kernel_size=5, num_output=50, weight_filler=dict(type='xavier'))
-    # n.pool2 = L.Pooling(n.conv2, kernel_size=2, stride=2, pool=P.Pooling.MAX)
-    # n.fc1 =   L.InnerProduct(n.pool2, num_output=500, weight_filler=dict(type='xavier'))
-    # EDIT HERE consider L.ELU or L.Sigmoid for the nonlinearity
-    # n.relu1 = L.ReLU(n.fc1, in_place=True)
-    # n.score =   L.InnerProduct(n.fc1, num_output=10, weight_filler=dict(type='xavier'))
+    n.conv1 = L.Convolution(n.data, kernel_size=5, num_output=20, weight_filler=dict(type='xavier'))
+    n.pool1 = L.Pooling(n.conv1, kernel_size=2, stride=2, pool=P.Pooling.MAX)
+    n.conv2 = L.Convolution(n.pool1, kernel_size=5, num_output=50, weight_filler=dict(type='xavier'))
+    n.pool2 = L.Pooling(n.conv2, kernel_size=2, stride=2, pool=P.Pooling.MAX)
+    n.fc1 =   L.InnerProduct(n.pool2, num_output=500, weight_filler=dict(type='xavier'))
+    
+	# EDIT HERE consider L.ELU or L.Sigmoid for the nonlinearity
+    n.relu1 = L.ReLU(n.fc1, in_place=True)
+    n.score =   L.InnerProduct(n.fc1, num_output=10, weight_filler=dict(type='xavier'))
     
     # keep this loss layer for all networks
     n.loss =  L.SoftmaxWithLoss(n.score, n.label)
